@@ -1,5 +1,10 @@
 // thanks https://www.abeautifulsite.net/posts/getting-localized-month-and-day-names-in-the-browser/
 
+import "./days.scss";
+import { UnitsContext } from '../../App';
+import { useContext } from 'react';
+
+
 function getDayNames(locale = 'en', format = 'long') {
     const formatter = new Intl.DateTimeFormat(locale, { weekday: format, timeZone: 'UTC' });
     const days = [1, 2, 3, 4, 5, 6, 7].map(day => {
@@ -11,18 +16,25 @@ function getDayNames(locale = 'en', format = 'long') {
 
 
 
-export default ({ data, country }) => {
+export default ({ data, country, unit }) => {
     const dayNames = getDayNames(country);
     const todayDay = new Date().getDay();
-    return <ul>{data.map((d, index) => {
-        const { temp: { min, max}} = d;
-        return <li>
-            <div><h3>{dayNames[(todayDay + index) % 7]}</h3></div>
-            <div>
-                min: {parseInt(min)} max: {parseInt(max)}
-            </div>
+    const unitType = unit === 'metric' ? '°C' : '°F';
 
-        </li>
-    })}
+    return <ul>
+        {data.map((d, index) => {
+            const { temp: { min, max }, weather } = d;
+            const icon = weather && weather[0].icon;
+            return <li className="day" key={index.toString()}>
+                <div>
+                    <h3>{dayNames[(todayDay + index) % 7]}</h3>
+                    {icon && <img src={`http://openweathermap.org/img/wn/${icon}@2x.png`}/>}
+                </div>
+                <div>
+                    ↓ {`${parseInt(min)}${unitType} ↑ ${parseInt(max)}${unitType}`}
+                </div>
+
+            </li>
+        })}
     </ul>
 }

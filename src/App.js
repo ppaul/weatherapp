@@ -1,13 +1,11 @@
-import './App.css';
 import Days from './components/days';
 import { useState, useEffect } from 'react';
-
-
 
 function App() {
   const [days, setDays] = useState([]);
   const [country, setCountry] = useState('en');
   const [city, setCity] = useState('...');
+  const [unit, setUnit] = useState('metric');
 
   useEffect(() => {
     async function getWeatherByLocation() {
@@ -16,9 +14,13 @@ function App() {
       const { city, location: { languages } } = ipData;
       setCity(city);
       const { code } = languages[0];
-      setCountry(code);
+     setCountry(code);
+     let unit = 'metric';
+     if (code === 'us' || code === 'lr' || code === 'mm') {
+       unit = 'imperial';
+     }
 
-      const weatherResponse = await fetch(`https://community-open-weather-map.p.rapidapi.com/forecast/daily?q=${city}&units=${code === 'us' ? 'imperial' : 'metric'}`, {
+      const weatherResponse = await fetch(`https://community-open-weather-map.p.rapidapi.com/forecast/daily?q=${city}&units=${unit}`, {
         "method": "GET",
         "headers": {
           "x-rapidapi-key": process.env.REACT_APP_X_RAPID_API_KEY,
@@ -28,6 +30,7 @@ function App() {
       const weatherData = await weatherResponse.json();
       const { list } = weatherData;
       setDays(list);
+      setUnit(unit);
     };
 
     getWeatherByLocation();
@@ -37,7 +40,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h2>Weekly weather in {city}</h2>
-        <Days data={days} country={country} />
+        <Days data={days} country={country} unit={unit}/>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
