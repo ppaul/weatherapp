@@ -1,0 +1,13 @@
+.day {
+  display: flex;
+  flex: 1;
+  max-width: 250px;
+  align-items: center;
+  padding: 10px;
+  list-style-type: none;
+  border: 1px dashed lightgray;
+  cursor: pointer; }
+
+.day .name {
+  margin: 10px;
+  text-transform: capitalize; }

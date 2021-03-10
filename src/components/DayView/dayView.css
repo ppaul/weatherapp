@@ -1,0 +1,10 @@
+.hoursList {
+  list-style-type: none;
+  flex: 1; }
+
+.hoursList .hour {
+  display: inline-flex;
+  width: 75px;
+  flex-direction: column;
+  border: 1px dotted lightgray;
+  padding: 10px; }
