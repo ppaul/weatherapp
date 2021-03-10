@@ -7,7 +7,6 @@
   list-style-type: none;
   border: 1px dashed lightgray;
   cursor: pointer; }
-
-.day .name {
-  margin: 10px;
-  text-transform: capitalize; }
+  .day .name {
+    margin: 10px;
+    text-transform: capitalize; }
