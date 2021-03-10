@@ -1,5 +1,6 @@
 {
     "name": "weatherapp",
+    "homepage": "https://ppaul.github.io/weatherapp/",
     "version": "0.1.0",
     "private": true,
     "engines": {
