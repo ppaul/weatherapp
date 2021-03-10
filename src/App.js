@@ -12,7 +12,7 @@ function App() {
     useEffect(() => {
         async function getWeatherByLocation() {
             const ipCheckResponse = await fetch(
-                `http://api.ipstack.com/check?access_key=${process.env.REACT_APP_IPSTACK_API_KEY}`
+                `https://api.ipstack.com/check?access_key=${process.env.REACT_APP_IPSTACK_API_KEY}`
             );
             const ipData = await ipCheckResponse.json();
             const {
