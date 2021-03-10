@@ -12,15 +12,20 @@ function App() {
     useEffect(() => {
         async function getWeatherByLocation() {
             const ipCheckResponse = await fetch(
-                `http://api.ipstack.com/check?access_key=${process.env.REACT_APP_IPSTACK_API_KEY}` // no https for free :(
+                "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/",
+                {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-key": process.env.REACT_APP_X_RAPID_API_KEY,
+                        "x-rapidapi-host":
+                            process.env.REACT_APP_IP_GEOLOCATION_HOST
+                    }
+                }
             );
             const ipData = await ipCheckResponse.json();
-            const {
-                city,
-                location: { languages }
-            } = ipData;
+            const { city, country_code } = ipData;
             setCity(city);
-            const { code } = languages[0];
+            const code = country_code.toLowerCase();
             setCountry(code);
             let unit = "metric";
             if (code === "us" || code === "lr" || code === "mm") {
