@@ -18,9 +18,11 @@ const DayView = ({ unit, details, setSelectedDay }) => {
                         return (
                             <li className="hour" key={index.toString()}>
                                 <div>{hour}</div>
-                                <h2>{`${parseInt(temp)}${unitType}`}</h2>
+                                <h2>{`${Math.round(temp)}${unitType}`}</h2>
                                 <div>
-                                    {`feels ${parseInt(feels_like)}${unitType}`}
+                                    {`feels ${Math.round(
+                                        feels_like
+                                    )}${unitType}`}
                                 </div>
                                 {icon && (
                                     <img

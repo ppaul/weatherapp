@@ -38,7 +38,7 @@ const WeekView = ({ data, country, setSelectedDay, unit }) => {
                         </h3>
                         <div>
                             ↓{" "}
-                            {`${parseInt(min)}${unitType} ↑ ${parseInt(
+                            {`${Math.round(min)}${unitType} ↑ ${Math.round(
                                 max
                             )}${unitType}`}
                         </div>
