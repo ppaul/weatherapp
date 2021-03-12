@@ -5,30 +5,26 @@ import DayView from "./components/DayView";
 function App() {
     const [days, setDays] = useState([]);
     const [country, setCountry] = useState("en");
-    const [city, setCity] = useState("...");
+    const [city, setCity] = useState("");
     const [unit, setUnit] = useState("metric");
     const [selectedDay, setSelectedDay] = useState(null);
 
     useEffect(() => {
         async function getWeatherByLocation() {
-            const ipCheckResponse = await fetch(
-                "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/",
-                {
-                    method: "GET",
-                    headers: {
-                        "x-rapidapi-key": process.env.REACT_APP_X_RAPID_API_KEY,
-                        "x-rapidapi-host":
-                            process.env.REACT_APP_IP_GEOLOCATION_HOST
-                    }
-                }
+            const geoLocationResponse = await fetch(
+                `https://api.getgeoapi.com/api/v2/ip/check?api_key=${process.env.REACT_APP_X_IPGEOLOCATION_APP_KEY}`
             );
-            const ipData = await ipCheckResponse.json();
-            const { city, country_code } = ipData;
-            setCity(city);
-            const code = country_code.toLowerCase();
+
+            const geoLocation = await geoLocationResponse.json();
+
+            const {
+                city: { name: city },
+                country: { code }
+            } = geoLocation;
+
             setCountry(code);
             let unit = "metric";
-            if (code === "us" || code === "lr" || code === "mm") {
+            if (code === "US" || code === "LR" || code === "MM") {
                 unit = "imperial";
             }
 
@@ -49,6 +45,7 @@ function App() {
             const first5Days = list.slice(0, 5);
             setDays(first5Days);
             setUnit(unit);
+            setCity(city);
 
             const daysDetailsResponse = await fetch(
                 `https://community-open-weather-map.p.rapidapi.com/forecast?q=${city}&units=${unit}`,
@@ -88,10 +85,11 @@ function App() {
         getWeatherByLocation();
     }, []);
 
+    // todo identify city
     return (
         <div className="App">
             <header className="App-header">
-                {!selectedDay ? (
+                {!selectedDay && city ? (
                     <h2>Weekly weather in {city}</h2>
                 ) : (
                     <h2>Day</h2>
